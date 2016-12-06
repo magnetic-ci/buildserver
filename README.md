@@ -1,3 +1,3 @@
-# Vamp build environment
+# Vamp build server
 
-Everything necessary to build all components of Vamp!
+Fedora 25 based Docker image containing all the necessary tooling to build all components of Vamp.
