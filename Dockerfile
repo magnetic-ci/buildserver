@@ -6,6 +6,8 @@ RUN set -xe \
     && dnf --assumeyes update \
     && dnf clean all
 
+# FIXME: This install nearly 500MB of packages, need to select only the
+#        necessary packages needed for building.
 # RUN set -xe \
 #     && dnf --assumeyes group install development-tools \
 #     && dnf clean all
