@@ -1,0 +1,18 @@
+#! /usr/bin/env bash
+
+: "${SBT_LAUNCH:=/usr/local/bin/sbt-launch.jar}"
+: "${SBT_GLOBAL_BASE:=/srv/sbt}"
+: "${SBT_IVY_HOME:=$SBT_GLOBAL_BASE/ivy2}"
+
+[[ -d "$SBT_GLOBAL_BASE" ]] || mkdir -p "$SBT_GLOBAL_BASE"
+[[ -w "$SBT_GLOBAL_BASE" ]] || { >&2 echo "ERROR: Can't write to ${SBT_GLOBAL_BASE}, exiting!"; exit 1; }
+
+java \
+  -Xms512M \
+  -Xmx1536M \
+  -Xss1M \
+  -XX:+CMSClassUnloadingEnabled \
+  -Dsbt.global.base=${SBT_GLOBAL_BASE} \
+  -Dsbt.ivy.home=${SBT_IVY_HOME} \
+  -jar /usr/local/sbt/sbt-launch.jar \
+  "$@"
