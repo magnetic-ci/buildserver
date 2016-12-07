@@ -6,12 +6,6 @@ RUN set -xe \
     && dnf --assumeyes update \
     && dnf clean all
 
-# FIXME: This install nearly 500MB of packages, need to select only the
-#        necessary packages needed for building.
-# RUN set -xe \
-#     && dnf --assumeyes group install development-tools \
-#     && dnf clean all
-
 RUN set -xe \
     && dnf --assumeyes install \
         bzip2 \
@@ -20,6 +14,14 @@ RUN set -xe \
         gzip \
         tar \
     && dnf clean all
+
+ENV DIR_BUILD=/srv/build
+ENV DIR_CACHE=/srv/cache
+ENV DIR_SRC=/srv/src
+RUN set -xe \
+    && mkdir -p "$DIR_BUILD" \
+    && mkdir -p "$DIR_CACHE" \
+    && mkdir -p "$DIR_SRC"
 
 # Install Scala
 ENV SCALA_VERSION=2.12.0
@@ -56,10 +58,10 @@ RUN set -xe \
 # Install Go
 ENV GO_VERSION=1.7.4
 ENV GO_URL=https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz
-ENV GOPATH=/usr/local/src/go
+ENV GOPATH="${DIR_SRC}/go"
 RUN set -xe \
     && curl --silent --show-error "$GO_URL" | tar -xzf - -C /usr/local \
-    && mkdir -p /usr/local/src/go
+    && mkdir -p "$GOPATH"
 
 
 ENV PATH="/usr/local/scala/bin:/usr/local/go/bin:$PATH"
