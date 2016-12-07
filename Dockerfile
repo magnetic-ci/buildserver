@@ -29,18 +29,18 @@ RUN set -xe \
     && cd /tmp/scala \
     && curl --location --remote-name --silent --show-error "$SCALA_URL" \
     && tar -zxf scala-${SCALA_VERSION}.tgz \
-    && mv scala-${SCALA_VERSION} /usr/local/share/scala \
+    && mv scala-${SCALA_VERSION} /usr/local/scala \
     && rm -rf /tmp/scala
 
 # Install SBT
 ENV SBT_VERSION=0.13.13
 ENV SBT_URL=http://dl.bintray.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/${SBT_VERSION}/sbt-launch.jar
 RUN set -xe \
-    && mkdir -p /usr/local/share/sbt/ \
-    && curl --location --silent --output /usr/local/share/sbt/sbt-launch.jar "$SBT_URL" \
+    && mkdir -p /usr/local/sbt/ \
+    && curl --location --silent --output /usr/local/sbt/sbt-launch.jar "$SBT_URL" \
     && echo '#! /bin/bash' > /usr/local/bin/sbt \
     && echo 'SBT_OPTS="-Xms512M -Xmx1536M -Xss1M -XX:+CMSClassUnloadingEnabled"' >> /usr/local/bin/sbt \
-    && echo 'java $SBT_OPTS -jar /usr/local/share/sbt/sbt-launch.jar "$@"' >> /usr/local/bin/sbt \
+    && echo 'java $SBT_OPTS -jar /usr/local/sbt/sbt-launch.jar "$@"' >> /usr/local/bin/sbt \
     && chmod 0775 /usr/local/bin/sbt
 
 # Install NodeJS
