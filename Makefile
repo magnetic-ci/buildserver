@@ -26,7 +26,7 @@ all: check build
 
 .PHONY: check
 check:
-	@echo "Checing buikld dependencies:"
+	@echo "Checking dependencies:"
 	$(foreach bin,$(dependencies),\
 		$(if $(shell command -v $(bin)),\
 			$(info Found in PATH: `$(bin)`),\
