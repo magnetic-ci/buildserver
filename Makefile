@@ -43,6 +43,18 @@ push: check
 	docker push $(docker_image)
 
 
+.PHONY: run
+run:
+	docker run \
+		--name "vamp-buildserver" \
+		--hostname "vamp-buildserver" \
+		--volume $(CURDIR)/src:/usr/local/src \
+		--interactive \
+		--tty \
+		--rm \
+		$(docker_image) \
+		/bin/bash
+
 .PHONY: clean
 clean:
 	docker rmi $(docker_image)
