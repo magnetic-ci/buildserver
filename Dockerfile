@@ -53,7 +53,9 @@ RUN set -xe \
     && curl --output - "$NVM_URL" | bash \
     && test -s "${NVM_DIR}/nvm.sh" && . "${NVM_DIR}/nvm.sh" \
     && nvm install "$NVM_USE_VERSION" \
-    && nvm use "$NVM_USE_VERSION"
+    && nvm use "$NVM_USE_VERSION" \
+    && npm config set cache "${DIR_CACHE}/npm" \
+    && npm --global config set cache "${DIR_CACHE}/npm"
 
 # Install Go
 ENV GO_VERSION=1.7.4
