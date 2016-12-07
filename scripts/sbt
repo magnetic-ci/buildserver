@@ -14,5 +14,5 @@ java \
   -XX:+CMSClassUnloadingEnabled \
   -Dsbt.global.base=${SBT_GLOBAL_BASE} \
   -Dsbt.ivy.home=${SBT_IVY_HOME} \
-  -jar /usr/local/sbt/sbt-launch.jar \
+  -jar "$SBT_LAUNCH" \
   "$@"
