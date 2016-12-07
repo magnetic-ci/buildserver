@@ -37,28 +37,21 @@ RUN set -xe \
 # Install SBT
 ENV SBT_VERSION=0.13.13
 ENV SBT_URL=http://dl.bintray.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/${SBT_VERSION}/sbt-launch.jar
+ADD scripts/sbt /usr/local/bin/sbt
 RUN set -xe \
-    && mkdir -p /usr/local/sbt/ \
-    && curl --location --silent --output /usr/local/sbt/sbt-launch.jar "$SBT_URL" \
-    && echo '#! /bin/bash' > /usr/local/bin/sbt \
-    && echo 'SBT_OPTS="-Xms512M -Xmx1536M -Xss1M -XX:+CMSClassUnloadingEnabled"' >> /usr/local/bin/sbt \
-    && echo 'java $SBT_OPTS -jar /usr/local/sbt/sbt-launch.jar "$@"' >> /usr/local/bin/sbt \
-    && chmod 0775 /usr/local/bin/sbt
+    && chmod 0775 /usr/local/bin/sbt \
+    && curl --output /usr/local/bin/sbt-launch.jar --location --silent --show-error "$SBT_URL"
 
-# Install NodeJS
-ENV NODE_VERSION=7.2.0
-ENV NODE_URL=https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz
+# Install NVM + NodeJS + NPM
+ENV NVM_VERSION=0.32.1
+ENV NVM_USE_VERSION=v7.2.1
+ENV NVM_URL=https://raw.githubusercontent.com/creationix/nvm/v${NVM_VERSION}/install.sh
+ENV NVM_DIR=/usr/local/nvm
 RUN set -xe \
-    && mkdir -p /tmp/node \
-    && cd /tmp/node \
-    && curl --location --remote-name --silent --show-error "$NODE_URL" \
-    && tar -zxf node-v${NODE_VERSION}-linux-x64.tar.gz \
-    && mv node-v${NODE_VERSION}-linux-x64 /usr/local/node \
-    && rm -rf /tmp/node
-
-RUN set -xe \
-    && mkdir -p /usr/local/node_modules \
-    && echo "prefix=/usr/local/node_modules" > /usr/local/node/etc/npmrc
+    && curl --output - "$NVM_URL" | bash \
+    && test -s "${NVM_DIR}/nvm.sh" && . "${NVM_DIR}/nvm.sh" \
+    && nvm install "$NVM_USE_VERSION" \
+    && nvm use "$NVM_USE_VERSION"
 
 # Install Go
 ENV GO_VERSION=1.7.4
@@ -69,4 +62,4 @@ RUN set -xe \
     && mkdir -p /usr/local/src/go
 
 
-ENV PATH="/usr/local/scala/bin:/usr/local/node/bin:/usr/local/go/bin:$PATH"
+ENV PATH="/usr/local/scala/bin:/usr/local/go/bin:$PATH"
