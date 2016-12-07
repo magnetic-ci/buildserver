@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 
 : "${SBT_LAUNCH:=/usr/local/bin/sbt-launch.jar}"
-: "${SBT_GLOBAL_BASE:=/srv/sbt}"
+: "${SBT_GLOBAL_BASE:=/srv/cache/sbt}"
 : "${SBT_IVY_HOME:=$SBT_GLOBAL_BASE/ivy2}"
 
 [[ -d "$SBT_GLOBAL_BASE" ]] || mkdir -p "$SBT_GLOBAL_BASE"
