@@ -51,8 +51,12 @@ RUN set -xe \
     && cd /tmp/node \
     && curl --location --remote-name --silent --show-error "$NODE_URL" \
     && tar -zxf node-v${NODE_VERSION}-linux-x64.tar.gz \
-    && mv node-v${NODE_VERSION}-linux-x64 /usr/local/share/node \
+    && mv node-v${NODE_VERSION}-linux-x64 /usr/local/node \
     && rm -rf /tmp/node
+
+RUN set -xe \
+    && mkdir -p /usr/local/node_modules \
+    && echo "prefix=/usr/local/node_modules" > /usr/local/node/etc/npmrc
 
 # Install Go
 ENV GO_VERSION=1.7.4
