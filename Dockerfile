@@ -66,4 +66,4 @@ RUN set -xe \
     && mkdir -p "$GOPATH"
 
 
-ENV PATH="/usr/local/scala/bin:/usr/local/go/bin:$PATH"
+ENV PATH="/usr/local/scala/bin:/usr/local/go/bin:${GOPATH}/bin:$PATH"
