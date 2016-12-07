@@ -61,8 +61,10 @@ RUN set -xe \
 # Install Go
 ENV GO_VERSION=1.7.4
 ENV GO_URL=https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz
+ENV GOPATH=/usr/local/src/go
 RUN set -xe \
-    && curl --silent --show-error "$GO_URL" | tar -xzf - -C /usr/local
+    && curl --silent --show-error "$GO_URL" | tar -xzf - -C /usr/local \
+    && mkdir -p /usr/local/src/go
 
 
-ENV PATH="/usr/local/share/scala/bin:/usr/local/share/node/bin:/usr/local/go/bin:$PATH"
+ENV PATH="/usr/local/scala/bin:/usr/local/node/bin:/usr/local/go/bin:$PATH"
