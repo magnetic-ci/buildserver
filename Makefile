@@ -21,7 +21,7 @@ dependencies := docker
 
 # Targets
 .PHONY: all
-all: check build push
+all: check build
 
 
 .PHONY: check
@@ -39,7 +39,7 @@ build: check
 
 
 .PHONY: push
-push: check
+push: check build
 	docker push $(docker_image)
 
 
@@ -48,7 +48,9 @@ run:
 	docker run \
 		--name "vamp-buildserver" \
 		--hostname "vamp-buildserver" \
-		--volume $(CURDIR)/src:/usr/local/src \
+		--volume $(CURDIR)/build:/srv/build \
+		--volume $(CURDIR)/cache:/srv/cache \
+		--volume $(CURDIR)/src:/srv/src \
 		--interactive \
 		--tty \
 		--rm \
