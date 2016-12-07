@@ -14,8 +14,10 @@ RUN set -xe \
 
 RUN set -xe \
     && dnf --assumeyes install \
+        bzip2 \
         curl \
         git \
+        gzip \
         tar \
     && dnf clean all
 
