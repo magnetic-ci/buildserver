@@ -79,3 +79,5 @@ ENV PATH="/usr/local/scala/bin:/usr/local/go/bin:${GOPATH}/bin:$PATH"
 RUN mkdir -p /srv/bin
 ENV PATH="/srv/bin:$PATH"
 ADD scripts /usr/local/bin/
+
+ADD buildinfo.txt /etc/motd
