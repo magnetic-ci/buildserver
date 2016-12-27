@@ -40,9 +40,13 @@ build: check
 
 
 .PHONY: push
-push: check build
+push: check
 	docker push $(docker_image)
 
+.PHONY: push-latest
+push-latest: check push
+	docker tag $(docker_image) $(VAMP_DOCKER_USER)/$(VAMP_DOCKER_REPO):latest
+	docker push $(VAMP_DOCKER_USER)/$(VAMP_DOCKER_REPO):latest
 
 .PHONY: run
 run:
