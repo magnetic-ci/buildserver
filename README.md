@@ -1,6 +1,6 @@
 # Vamp build server
 
-Fedora 25 based Docker image containing all the necessary tooling to build all components of Vamp.
+Fedora 25 based Docker image containing all the necessary tooling to build all components of Vamp. Available at [the Docker Hub](https://hub.docker.com/r/magneticio/buildserver/).
 
 The Makefile contains several targets. If you just want to use build the components of Vamp you can do `make run` to sping up a container on your machine. For more details see the Makefile.
 
