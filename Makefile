@@ -8,7 +8,7 @@ SHELL             := bash
 
 # Constants, these can be overwritten in your Makefile.local
 VAMP_DOCKER_USER := magneticio
-VAMP_DOCKER_REPO := vamp-buildserver
+VAMP_DOCKER_REPO := buildserver
 VAMP_DOCKER_TAG  := 0.1
 
 # if Makefile.local exists, include it.
@@ -47,11 +47,13 @@ push: check build
 .PHONY: run
 run:
 	docker run \
-		--name "vamp-buildserver" \
-		--hostname "vamp-buildserver" \
+		--name "buildserver" \
+		--hostname "buildserver" \
 		--volume $(CURDIR)/build:/srv/build \
 		--volume $(CURDIR)/cache:/srv/cache \
 		--volume $(CURDIR)/src:/srv/src \
+		--volume /var/run/docker.sock:/var/run/docker.sock \
+		--volume $(shell command -v docker):/usr/bin/docker \
 		--interactive \
 		--tty \
 		--rm \
