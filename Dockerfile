@@ -74,3 +74,8 @@ RUN set -xe \
     && chmod 0755 /usr/local/bin/lein
 
 ENV PATH="/usr/local/scala/bin:/usr/local/go/bin:${GOPATH}/bin:$PATH"
+
+# Add any other scripts to our image
+RUN mkdir -p /srv/bin
+ENV PATH="/srv/bin:$PATH"
+ADD scripts /usr/local/bin/
