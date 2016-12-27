@@ -65,5 +65,12 @@ RUN set -xe \
     && curl --silent --show-error "$GO_URL" | tar -xzf - -C /usr/local \
     && mkdir -p "$GOPATH"
 
+# Install Leiningen
+ENV LEIN_ROOT=yes
+ENV LEIN_HOME=/srv/cache/lein
+ENV LEIN_URL=https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
+RUN set -xe \
+    && curl --output /usr/local/bin/lein "$LEIN_URL" \
+    && chmod 0755 /usr/local/bin/lein
 
 ENV PATH="/usr/local/scala/bin:/usr/local/go/bin:${GOPATH}/bin:$PATH"
