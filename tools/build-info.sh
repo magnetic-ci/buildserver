@@ -18,10 +18,14 @@ fi
 
 # Write our output file
 cat << EOF > "$output"
-Vamp buildserver, https://github.com/magneticio/vamp-buildserver
 
-Image version: $version
-Build date:    $(date --utc +%FT%TZ)
+Vamp buildserver
+https://github.com/magneticio/vamp-buildserver
+
+Created: $(date --utc +%FT%TZ)
+Version: $version
+Tag    : $( git describe --tags )
+Commit : $( git rev-parse HEAD )
 
 EOF
 
