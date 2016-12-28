@@ -1,0 +1,28 @@
+#! /usr/bin/env bash
+
+USERNAME="vamp"
+
+if [[ -z $BUILD_UID ]] ; then
+  >&2 echo "ERROR: BUILD_UID is empty, exiting!"
+  exit 1
+fi
+
+if [[ -z $BUILD_GID ]] ; then
+  >&2 echo "ERROR: BUILD_GID is empty, exiting!"
+  exit 1
+fi
+
+
+if [[ ! $( id "$BUILD_UID" 2> /dev/null ) ]] ; then
+  groupadd --gid "$BUILD_GID" "$USERNAME"
+  useradd --uid "$BUILD_UID" --gid "$BUILD_GID" "$USERNAME"
+fi
+
+cat /etc/motd
+
+if [[ $# -ge 1 ]] ; then
+  exec su "$USERNAME" --command="$*"
+else
+  >&2 echo "No command specified"
+fi
+

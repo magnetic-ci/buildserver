@@ -75,9 +75,13 @@ RUN set -xe \
 
 ENV PATH="/usr/local/scala/bin:/usr/local/go/bin:${GOPATH}/bin:$PATH"
 
-# Add any other scripts to our image
-RUN mkdir -p /srv/bin
-ENV PATH="/srv/bin:$PATH"
-ADD scripts /usr/local/bin/
+ENV GOSU_VERSION=1.10
+RUN set -xe \
+    && curl --location --silent --show-error --output /usr/local/bin/gosu \
+      https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-amd64 \
+    && chmod 0755 /usr/local/bin/gosu
 
 ADD buildinfo.txt /etc/motd
+
+ADD scripts/buildserver-entrypoint /usr/local/bin/buildserver-entrypoint
+ENTRYPOINT ["/usr/local/bin/buildserver-entrypoint"]
