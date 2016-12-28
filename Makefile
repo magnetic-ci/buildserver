@@ -7,9 +7,9 @@ SHELL             := bash
 .SUFFIXES:
 
 # Constants, these can be overwritten in your Makefile.local
-VAMP_DOCKER_USER := magneticio
-VAMP_DOCKER_REPO := buildserver
-VAMP_DOCKER_TAG  := 0.1
+DOCKER_USER := magneticio
+DOCKER_REPO := buildserver
+DOCKER_TAG  := 0.1
 
 # if Makefile.local exists, include it.
 ifneq ("$(wildcard Makefile.local)", "")
@@ -17,7 +17,7 @@ ifneq ("$(wildcard Makefile.local)", "")
 endif
 
 # Don't change these
-docker_image := $(VAMP_DOCKER_USER)/$(VAMP_DOCKER_REPO):$(VAMP_DOCKER_TAG)
+docker_image := $(DOCKER_USER)/$(DOCKER_REPO):$(DOCKER_TAG)
 dependencies := docker
 
 # Targets
@@ -40,15 +40,14 @@ check:
 build: check
 	docker build --tag $(docker_image) .
 
-
 .PHONY: push
 push: check
 	docker push $(docker_image)
 
 .PHONY: push-latest
 push-latest: check push
-	docker tag $(docker_image) $(VAMP_DOCKER_USER)/$(VAMP_DOCKER_REPO):latest
-	docker push $(VAMP_DOCKER_USER)/$(VAMP_DOCKER_REPO):latest
+	docker tag $(docker_image) $(DOCKER_USER)/$(DOCKER_REPO):latest
+	docker push $(DOCKER_USER)/$(DOCKER_REPO):latest
 
 .PHONY: run
 run:
