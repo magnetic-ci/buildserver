@@ -1,5 +1,9 @@
 #! /usr/bin/env bash
 
+# Entrypoint to create a user, and run command as that user. This allows us
+# to pass BUILD_UID and BUILD_GID environment variables at container run-time
+# to not clobber the permissions and ownership of mounted volumes
+
 USERNAME="vamp"
 
 if [[ -z $BUILD_UID ]] ; then
