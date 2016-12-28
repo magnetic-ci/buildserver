@@ -61,6 +61,8 @@ run:
 		--volume $(CURDIR)/scripts:/srv/bin \
 		--volume /var/run/docker.sock:/var/run/docker.sock \
 		--volume $(shell command -v docker):/usr/bin/docker \
+		--env BUILD_UID=$(shell id -u) \
+		--env BUILD_GID=$(shell id -g) \
 		--interactive \
 		--tty \
 		--rm \
