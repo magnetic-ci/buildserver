@@ -7,15 +7,14 @@
 USERNAME="vamp"
 
 if [[ -z $BUILD_UID ]] ; then
-  >&2 echo "ERROR: BUILD_UID is empty, exiting!"
-  exit 1
+  echo "No BUILD_UID set, spawning shell"
+  exec /bin/bash -l
 fi
 
 if [[ -z $BUILD_GID ]] ; then
-  >&2 echo "ERROR: BUILD_GID is empty, exiting!"
-  exit 1
+  echo "BUILD_GID is empty, using '$BUILD_UID'"
+  BUILD_GID="$BUILD_UID"
 fi
-
 
 if [[ ! $( id "$BUILD_UID" 2> /dev/null ) ]] ; then
   groupadd --gid "$BUILD_GID" "$USERNAME"
@@ -27,6 +26,6 @@ cat /etc/motd
 if [[ $# -ge 1 ]] ; then
   exec su "$USERNAME" --command="$*"
 else
-  >&2 echo "No command specified"
+  echo "No command specified, exiting!"
 fi
 
