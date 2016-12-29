@@ -24,7 +24,7 @@ RUN set -xe \
     && mkdir -p "$DIR_SRC"
 
 # Install Scala
-ENV SCALA_VERSION=2.12.0
+ENV SCALA_VERSION=2.12.1
 ENV SCALA_URL=http://downloads.lightbend.com/scala/${SCALA_VERSION}/scala-${SCALA_VERSION}.tgz
 RUN set -xe \
     && dnf --assumeyes install java-1.8.0-openjdk \
