@@ -1,18 +1,13 @@
 #! /usr/bin/env bash
 
-: "${SBT_LAUNCH:=/usr/local/bin/sbt-launch.jar}"
-: "${SBT_GLOBAL_BASE:=/srv/cache/sbt}"
-: "${SBT_IVY_HOME:=$SBT_GLOBAL_BASE/ivy2}"
+# SBT launcher: http://www.scala-sbt.org/0.13/docs/Manual-Installation.html
 
-[[ -d "$SBT_GLOBAL_BASE" ]] || mkdir -p "$SBT_GLOBAL_BASE"
-[[ -w "$SBT_GLOBAL_BASE" ]] || { >&2 echo "ERROR: Can't write to ${SBT_GLOBAL_BASE}, exiting!"; exit 1; }
+: "${SBT_LAUNCH:=/usr/local/bin/sbt-launch.jar}"
 
 java \
   -Xms512M \
   -Xmx1536M \
   -Xss1M \
   -XX:+CMSClassUnloadingEnabled \
-  -Dsbt.global.base=${SBT_GLOBAL_BASE} \
-  -Dsbt.ivy.home=${SBT_IVY_HOME} \
   -jar "$SBT_LAUNCH" \
   "$@"
