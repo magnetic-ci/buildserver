@@ -35,6 +35,7 @@ RUN set -xe \
     && tar -zxf scala-${SCALA_VERSION}.tgz \
     && mv scala-${SCALA_VERSION} /usr/local/scala \
     && rm -rf /tmp/scala
+ENV PATH="/usr/local/scala/bin:$PATH"
 
 # Install SBT
 ENV SBT_VERSION=0.13.13
@@ -53,9 +54,10 @@ RUN set -xe \
     && curl --output - "$NVM_URL" | bash \
     && test -s "${NVM_DIR}/nvm.sh" && . "${NVM_DIR}/nvm.sh" \
     && nvm install "$NVM_USE_VERSION" \
-    && nvm use "$NVM_USE_VERSION" \
-    && npm config set cache "${DIR_CACHE}/npm" \
-    && npm --global config set cache "${DIR_CACHE}/npm"
+    && nvm use "$NVM_USE_VERSION"
+ENV PATH="${NVM_DIR}/versions/node/${NVM_USE_VERSION}/bin/:$PATH"
+ENV PATH="./node_modules/.bin:$PATH"
+
 
 # Install Go
 ENV GO_VERSION=1.7.4
@@ -64,6 +66,7 @@ ENV GOPATH="${DIR_SRC}/go"
 RUN set -xe \
     && curl --silent --show-error "$GO_URL" | tar -xzf - -C /usr/local \
     && mkdir -p "$GOPATH"
+ENV PATH="/usr/local/go/bin:${GOPATH}/bin:$PATH"
 
 # Install Leiningen
 ENV LEIN_ROOT=yes
@@ -73,15 +76,16 @@ RUN set -xe \
     && curl --output /usr/local/bin/lein "$LEIN_URL" \
     && chmod 0755 /usr/local/bin/lein
 
-ENV PATH="/usr/local/scala/bin:/usr/local/go/bin:${GOPATH}/bin:$PATH"
-
 ENV GOSU_VERSION=1.10
 RUN set -xe \
     && curl --location --silent --show-error --output /usr/local/bin/gosu \
       https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-amd64 \
     && chmod 0755 /usr/local/bin/gosu
 
+
 ADD buildinfo.txt /etc/motd
 
 ADD scripts/buildserver-entrypoint /usr/local/bin/buildserver-entrypoint
+
 ENTRYPOINT ["/usr/local/bin/buildserver-entrypoint"]
+
