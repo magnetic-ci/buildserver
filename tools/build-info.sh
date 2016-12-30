@@ -1,7 +1,6 @@
 #! /usr/bin/env bash
 
-# Provide build info to the Docker image
-version="$( git rev-parse --short HEAD )"
+# Output file to be included in image as /etc/motd
 output="buildinfo.txt"
 
 # Get our build version
@@ -15,6 +14,9 @@ if [[ -z $version ]] ; then
   version="$( git rev-parse --short HEAD ) @ ${branch}"
 fi
 
+# Add a note that image was built untracked changes
+dirty="$( git status --porcelain 2> /dev/null )"
+[[ -n $dirty ]] && dirty="(dirty build)" || dirty=""
 
 # Write our output file
 cat << EOF > "$output"
@@ -23,7 +25,7 @@ Vamp buildserver
 https://github.com/magneticio/vamp-buildserver
 
 Created: $(date --utc +%FT%TZ)
-Version: $version
+Version: $version $dirty
 Tag    : $( git describe --tags )
 Commit : $( git rev-parse HEAD )
 
