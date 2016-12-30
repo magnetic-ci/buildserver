@@ -6,26 +6,19 @@
 
 USERNAME="vamp"
 
-if [[ -z $BUILD_UID ]] ; then
-  echo "No BUILD_UID set, spawning shell"
-  exec /bin/bash -l
-fi
-
-if [[ -z $BUILD_GID ]] ; then
-  echo "BUILD_GID is empty, using '$BUILD_UID'"
-  BUILD_GID="$BUILD_UID"
-fi
-
-if [[ ! $( id "$BUILD_UID" 2> /dev/null ) ]] ; then
-  groupadd --gid "$BUILD_GID" "$USERNAME"
-  useradd --uid "$BUILD_UID" --gid "$BUILD_GID" "$USERNAME"
-fi
-
 cat /etc/motd
 
-if [[ $# -ge 1 ]] ; then
-  exec su "$USERNAME" --command="$*"
+if [[ -z $BUILD_UID ]] ; then
+  exec $@
 else
-  echo "No command specified, exiting!"
-fi
+  [[ -z $BUILD_GID ]] && BUILD_GID="$BUILD_UID"
 
+  echo "Adding user inside docker container:" \
+       "uid=${BUILD_UID}($USERNAME) gid=${BUILD_GID}($USERNAME)"
+
+  groupadd --gid "$BUILD_GID" "$USERNAME" \
+    && useradd --uid "$BUILD_UID" --gid "$BUILD_GID" "$USERNAME" \
+    || { echo "Failed to add user, exiting!"; exit 1; }
+
+  exec su "$USERNAME" --command="$*"
+fi
