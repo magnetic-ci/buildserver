@@ -54,10 +54,6 @@ run:
 	docker run \
 		--name "buildserver" \
 		--hostname "buildserver" \
-		--volume $(CURDIR)/build:/srv/build \
-		--volume $(CURDIR)/cache:/srv/cache \
-		--volume $(CURDIR)/src:/srv/src \
-		--volume $(CURDIR)/scripts:/srv/bin \
 		--volume /var/run/docker.sock:/var/run/docker.sock \
 		--volume $(shell command -v docker):/usr/bin/docker \
 		--env BUILD_UID=$(shell id -u) \
