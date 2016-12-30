@@ -9,7 +9,7 @@ SHELL             := bash
 # Constants, these can be overwritten in your Makefile.local
 DOCKER_USER := magneticio
 DOCKER_REPO := buildserver
-DOCKER_TAG  := 0.3
+DOCKER_TAG  := 0.4
 
 # if Makefile.local exists, include it.
 ifneq ("$(wildcard Makefile.local)", "")
