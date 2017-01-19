@@ -56,11 +56,26 @@ run:
 		--hostname "buildserver" \
 		--volume /var/run/docker.sock:/var/run/docker.sock \
 		--volume $(shell command -v docker):/usr/bin/docker \
+		--interactive \
+		--tty \
+		--rm \
+		--volume $(CURDIR)/srv:/srv \
+		$(docker_image) \
+		/bin/bash
+
+.PHONY: run-user
+run-user:
+	docker run \
+		--name "buildserver" \
+		--hostname "buildserver" \
+		--volume /var/run/docker.sock:/var/run/docker.sock \
+		--volume $(shell command -v docker):/usr/bin/docker \
 		--env BUILD_UID=$(shell id -u) \
 		--env BUILD_GID=$(shell id -g) \
 		--interactive \
 		--tty \
 		--rm \
+		--volume $(CURDIR)/srv:/srv \
 		$(docker_image) \
 		/bin/bash
 
