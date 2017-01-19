@@ -83,9 +83,11 @@ RUN set -xe \
     && chmod 0755 /usr/local/bin/gosu
 
 
-ADD buildinfo.txt /etc/motd
+ADD files/ /
 
 ADD scripts/buildserver-entrypoint /usr/local/bin/buildserver-entrypoint
+
+ADD buildinfo.txt /etc/motd
 
 ENTRYPOINT ["/usr/local/bin/buildserver-entrypoint"]
 
