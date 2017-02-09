@@ -87,7 +87,7 @@ ADD files/ /
 
 ADD scripts/buildserver-entrypoint /usr/local/bin/buildserver-entrypoint
 
-ADD buildinfo /files/etc/motd
+ADD buildinfo /etc/motd
 
 ENTRYPOINT ["/usr/local/bin/buildserver-entrypoint"]
 
