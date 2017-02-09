@@ -1,3 +1,5 @@
 Makefile.local
 Makefile.*
-buildinfo.txt
+buildinfo
+version
+tag

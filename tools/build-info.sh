@@ -1,34 +1,38 @@
 #! /usr/bin/env bash
+# This script collects information about version and build date
 
-# Output file to be included in image as /etc/motd
-output="buildinfo.txt"
+dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.."
 
-# Get our build version
-version="$( git describe --tags --abbrev=0 2> /dev/null )"
+# Output files
+output_buildinfo="${dir}/buildinfo"
+output_version="${dir}/version"
+output_tag="${dir}/tag"
 
-# If we're not on a tag just get commit and ref
-if [[ -z $version ]] ; then
-  branch="$(git symbolic-ref HEAD 2> /dev/null)"
-  branch="${branch#refs/heads/}"
 
-  version="$( git rev-parse --short HEAD ) @ ${branch}"
-fi
+# Get our version and tag
+version="$( git describe --tags )"
+[[ $version = $( git describe --tags --abbrev=0 ) ]] \
+  && tag="latest" \
+  || tag="katana"
 
-# Add a note that image was built untracked changes
-dirty="$( git status --porcelain 2> /dev/null )"
-[[ -n $dirty ]] && dirty="(dirty build)" || dirty=""
+# Write our output files
+echo "$version" > "$output_version"
 
-# Write our output file
-cat << EOF > "$output"
+echo "$tag" > "$output_tag"
 
-Vamp buildserver
-https://github.com/magneticio/vamp-buildserver
+cat << EOF > "$output_buildinfo"
 
-Created: $(date --utc +%FT%TZ)
-Version: $version $dirty
-Tag    : $( git describe --tags )
-Commit : $( git rev-parse HEAD )
+┌───────────────────╴Vamp Buildserver╶───────────────────┄
+│
+│ Source code: https://github.com/magneticio/buildserver
+│ Version    : $version ($tag)
+│ Commit     : $( git rev-parse HEAD )
+│ Build date : $(date --utc +%FT%TZ)
+│
+└────────────────────────────────────────────────────────┄
 
 EOF
 
-cat "$output"
+cat "$output_buildinfo"
+
+exit
