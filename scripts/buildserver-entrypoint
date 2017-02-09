@@ -5,6 +5,7 @@
 # to not clobber the permissions and ownership of mounted volumes
 
 USERNAME="vamp"
+USERHOME="/home/${USERNAME}"
 
 cat /etc/motd
 
@@ -17,8 +18,13 @@ else
        "uid=${BUILD_UID}($USERNAME) gid=${BUILD_GID}($USERNAME)"
 
   groupadd --gid "$BUILD_GID" "$USERNAME" \
-    && useradd --uid "$BUILD_UID" --gid "$BUILD_GID" "$USERNAME" \
+    || { echo "Failed to add group, exiting!"; exit 1; }
+
+  useradd --uid "$BUILD_UID" --gid "$BUILD_GID" --home-dir "$USERHOME" "$USERNAME" \
     || { echo "Failed to add user, exiting!"; exit 1; }
+
+  chown -R "${BUILD_UID}:${BUILD_GID}" "$USERHOME"
+  chmod -R 0755 "$USERHOME"
 
   exec su "$USERNAME" --command="$*"
 fi
