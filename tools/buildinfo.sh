@@ -33,6 +33,4 @@ cat << EOF > "$output_buildinfo"
 
 EOF
 
-cat "$output_buildinfo"
-
-exit
+exit 0

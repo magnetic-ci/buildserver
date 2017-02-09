@@ -9,7 +9,6 @@ SHELL             := bash
 # Constants, these can be overwritten in your Makefile.local
 DOCKER_USER := magneticio
 DOCKER_REPO := buildserver
-DOCKER_TAG  := 0.4
 
 # if Makefile.local exists, include it.
 ifneq ("$(wildcard Makefile.local)", "")
@@ -17,13 +16,12 @@ ifneq ("$(wildcard Makefile.local)", "")
 endif
 
 # Don't change these
-docker_image := $(DOCKER_USER)/$(DOCKER_REPO):$(DOCKER_TAG)
+docker_image := $(DOCKER_USER)/$(DOCKER_REPO)
 dependencies := docker
 
 # Targets
 .PHONY: all
 all: check build
-
 
 .PHONY: check
 check:
@@ -33,24 +31,28 @@ check:
 			$(info Found in PATH: `$(bin)`),\
 			$(error Missing from PATH: `$(bin)`)))
 
-	$(CURDIR)/tools/build-info.sh
-
+	$(CURDIR)/tools/buildinfo.sh
 
 .PHONY: build
 build: check
-	docker build --tag $(docker_image) .
+	@if [[ $$(<tag) = "katana" ]] ; then \
+		docker build --tag $(docker_image):katana . ;\
+	else \
+		docker build --tag $(docker_image):$$(<version) . ;\
+		docker tag $(docker_image):$$(<version) $(docker_image):$$(<tag) ;\
+	fi
 
 .PHONY: push
 push: check
-	docker push $(docker_image)
-
-.PHONY: push-latest
-push-latest: check push
-	docker tag $(docker_image) $(DOCKER_USER)/$(DOCKER_REPO):latest
-	docker push $(DOCKER_USER)/$(DOCKER_REPO):latest
+	@if [[ $$(<tag) = "katana" ]] ; then \
+		docker push $(docker_image):katana ;\
+	else \
+		docker push $(docker_image):$$(<version) ;\
+		docker push $(docker_image):$$(<tag) ;\
+	fi
 
 .PHONY: run
-run:
+run: check
 	docker run \
 		--name "buildserver" \
 		--hostname "buildserver" \
@@ -60,11 +62,11 @@ run:
 		--tty \
 		--rm \
 		--volume $(CURDIR)/srv:/srv \
-		$(docker_image) \
+		$(docker_image):$$(<tag) \
 		/bin/bash
 
 .PHONY: run-user
-run-user:
+run-user: check
 	docker run \
 		--name "buildserver" \
 		--hostname "buildserver" \
@@ -76,10 +78,13 @@ run-user:
 		--tty \
 		--rm \
 		--volume $(CURDIR)/srv:/srv \
-		$(docker_image) \
+		$(docker_image):$$(<tag) \
 		/bin/bash
 
 .PHONY: clean
 clean:
-	docker rmi $(docker_image)
 	rm -f $(CURDIR)/buildinfo $(CURDIR)/version $(CURDIR)/tag
+
+.PHONY: clean-docker
+clean-docker:
+	docker rmi $(docker_image):$$(<tag)
