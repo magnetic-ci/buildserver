@@ -79,21 +79,7 @@ run-user:
 		$(docker_image) \
 		/bin/bash
 
-.PHONY: clean-all
-clean-all:  clean-build clean-docker clean-src clean-src
-
-.PHONY: clean-docker
-clean-docker:
+.PHONY: clean
+clean:
 	docker rmi $(docker_image)
-
-.PHONY: clean-cache
-clean-cache:
-	rm -rf $(CURDIR)/cache/*
-
-.PHONY: clean-build
-clean-build:
-	rm -rf $(CURDIR)/build/*
-
-.PHONY: clean-src
-clean-src:
-	rm -rf $(CURDIR)/src/*
+	rm -f $(CURDIR)/buildinfo $(CURDIR)/version $(CURDIR)/tag
