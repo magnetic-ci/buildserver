@@ -11,9 +11,14 @@ output_tag="${dir}/tag"
 
 # Get our version and tag
 version="$( git describe --tags )"
+tag="katana"
+
+# If our version matches the tag we're on and we have no unstaged changes we're
+# on the latest releast
 [[ $version = $( git describe --tags --abbrev=0 ) ]] \
-  && tag="latest" \
-  || tag="katana"
+&& [[ -z $( git status --porcelain 2> /dev/null ) ]] \
+    && tag="latest"
+
 
 # Write our output files
 echo "$version" > "$output_version"
