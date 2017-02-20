@@ -3,10 +3,9 @@ FROM fedora:25
 # Base layer for our image
 RUN set -xe \
     && echo "deltarpm=0" >> /etc/dnf/dnf.conf \
+    && dnf makecache fast \
     && dnf --assumeyes update \
-    && dnf clean all
-
-RUN set -xe \
+    \
     && dnf --assumeyes install \
         bzip2 \
         curl \
