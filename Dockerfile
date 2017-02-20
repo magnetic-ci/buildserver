@@ -46,8 +46,8 @@ RUN set -xe \
     && curl --output /usr/local/bin/sbt-launch.jar --location --silent --show-error "$SBT_URL"
 
 # Install NVM + NodeJS + NPM
-ENV NVM_VERSION=0.32.1
-ENV NVM_USE_VERSION=v7.3.0
+ENV NVM_VERSION=0.33.0
+ENV NVM_USE_VERSION=v7.5.0
 ENV NVM_URL=https://raw.githubusercontent.com/creationix/nvm/v${NVM_VERSION}/install.sh
 ENV NVM_DIR=/usr/local/nvm
 RUN set -xe \
