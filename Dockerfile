@@ -39,9 +39,7 @@ ENV PATH="/usr/local/scala/bin:$PATH"
 # Install SBT
 ENV SBT_VERSION=0.13.13
 ENV SBT_URL=http://dl.bintray.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/${SBT_VERSION}/sbt-launch.jar
-ADD scripts/sbt /usr/local/bin/sbt
 RUN set -xe \
-    && chmod 0775 /usr/local/bin/sbt \
     && curl --output /usr/local/bin/sbt-launch.jar --location --silent --show-error "$SBT_URL"
 
 # Install NVM + NodeJS + NPM
