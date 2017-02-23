@@ -4,14 +4,23 @@
 # to pass BUILD_UID and BUILD_GID environment variables at container run-time
 # to not clobber the permissions and ownership of mounted volumes
 
+cat /etc/motd
+
 USERNAME="vamp"
 USERHOME="/home/${USERNAME}"
 
-cat /etc/motd
+# Redirect STDERR to STDOUT and either execute as root or specified user
+run() {
+  exec 2>&1
 
-if [[ -z $BUILD_UID ]] ; then
-  exec $@
-else
+  if [[ -n $BUILD_UID ]] ; then
+    exec "$@"
+  else
+    exec su "$USERNAME" --command="$*"
+  fi
+}
+
+if [[ -n $BUILD_UID ]] ; then
   [[ -z $BUILD_GID ]] && BUILD_GID="$BUILD_UID"
 
   echo "Adding user inside docker container:" \
@@ -26,5 +35,11 @@ else
   chown -R "${BUILD_UID}:${BUILD_GID}" "$USERHOME"
   chmod -R 0755 "$USERHOME"
 
-  exec su "$USERNAME" --command="$*"
 fi
+
+
+case "$1" in
+  *)
+    run "$@"
+    ;;
+esac
