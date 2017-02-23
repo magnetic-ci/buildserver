@@ -1,23 +1,24 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-project=$1
+# Push a project into the stash volume
 
-if [[ -z ${project} ]]; then
+project="$1"
+version="$2"
+
+if [[ -z $project ]]; then
   echo "no project name provided"
   exit 1
 fi
 
-version=$2
-
-if [[ -z ${version} ]]; then
+if [[ -z $version ]]; then
   echo "no version name provided"
   exit 1
 fi
 
-echo "project: ${project}"
-echo "version: ${version}"
+echo "project: $project"
+echo "version: $version"
 
-if [ ! "$(ls -A /usr/local/src)" ]; then
+if [ ! "$( ls -A /usr/local/src )" ]; then
   echo "nothing to be stashed"
   exit 0
 fi
@@ -27,6 +28,6 @@ katana="/usr/local/stash/${project}-katana"
 
 echo "stashing /usr/local/src as ${target}"
 
-rm -Rf ${target} && mkdir -p ${target}
-cp -a "/usr/local/src/." "${target}/"
-rm -Rf ${katana} && ln -s ${target} ${katana}
+rm -Rf "$target" && mkdir -p "$target"
+cp -a "/usr/local/src/." "$target/"
+rm -Rf "$katana" && ln -s "$target" "$katana"

@@ -24,7 +24,7 @@ USERHOME="/home/${USERNAME}"
 run() {
   exec 2>&1
 
-  if [[ -n $BUILD_UID ]] ; then
+  if [[ -z $BUILD_UID ]] ; then
     exec "$@"
   else
     exec su "$USERNAME" --command="$*"
@@ -45,11 +45,16 @@ if [[ -n $BUILD_UID ]] ; then
 
   chown -R "${BUILD_UID}:${BUILD_GID}" "$USERHOME"
   chmod -R 0755 "$USERHOME"
-
 fi
 
 
 case "$1" in
+  "push")
+    run /usr/local/bin/push "$@"
+    ;;
+  "pull")
+    run /usr/local/bin/pull "$@"
+    ;;
   *)
     run "$@"
     ;;
