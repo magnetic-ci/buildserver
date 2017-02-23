@@ -35,6 +35,7 @@ check:
 
 .PHONY: build
 build: check
+	@echo "Building container: $(docker_image):$$(<tag)"
 	@if [[ $$(<tag) = "katana" ]] ; then \
 		docker build --tag $(docker_image):katana . ;\
 	else \
@@ -44,6 +45,7 @@ build: check
 
 .PHONY: push
 push: check
+	@echo "Pushing container: $(docker_image):$$(<tag)"
 	@if [[ $$(<tag) = "katana" ]] ; then \
 		docker push $(docker_image):katana ;\
 	else \
