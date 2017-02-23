@@ -86,8 +86,6 @@ VOLUME /usr/local/stash
 
 ADD files/ /
 
-ADD scripts/buildserver-entrypoint /usr/local/bin/buildserver-entrypoint
-
 ADD buildinfo /etc/motd
 
 ENTRYPOINT ["/usr/local/bin/buildserver-entrypoint"]
