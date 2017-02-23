@@ -79,6 +79,10 @@ RUN set -xe \
       https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-amd64 \
     && chmod 0755 /usr/local/bin/gosu
 
+RUN set -xe && mkdir -p /usr/local/{src,dst,stash}
+VOLUME /usr/local/src
+VOLUME /usr/local/dst
+VOLUME /usr/local/stash
 
 ADD files/ /
 
