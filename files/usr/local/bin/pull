@@ -30,4 +30,4 @@ echo "version: $version"
 target="/usr/local/stash/${project}-${version}"
 
 echo "pulling ${target} to /usr/local/dst"
-cp -a "${target}/*" /usr/local/dst/.
+cp -a ${target}/* /usr/local/dst/
