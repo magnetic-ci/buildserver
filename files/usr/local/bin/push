@@ -2,6 +2,15 @@
 
 # Push a project into the stash volume
 
+# Enable additional logging
+if [[ -n $BUILDSERVER_DEBUG ]] ; then
+  # Add more info to xtrace: source file, line number, function name
+  export PS4='+(${BASH_SOURCE##*/}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
+
+  # Print command traces before executing command.
+  set -o xtrace
+fi
+
 project="$1"
 version="$2"
 
