@@ -50,9 +50,11 @@ fi
 
 case "$1" in
   "push")
+    set -- "${@:2}"
     run /usr/local/bin/push "$@"
     ;;
   "pull")
+    set -- "${@:2}"
     run /usr/local/bin/pull "$@"
     ;;
   *)
