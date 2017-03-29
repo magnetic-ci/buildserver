@@ -44,7 +44,7 @@ RUN set -xe \
 
 # Install NVM + NodeJS + NPM
 ENV NVM_VERSION=0.33.0
-ENV NVM_USE_VERSION=v7.5.0
+ENV NVM_USE_VERSION=v7.8.0
 ENV NVM_URL=https://raw.githubusercontent.com/creationix/nvm/v${NVM_VERSION}/install.sh
 ENV NVM_DIR=/usr/local/nvm
 RUN set -xe \
@@ -57,7 +57,7 @@ ENV PATH="./node_modules/.bin:$PATH"
 
 
 # Install Go
-ENV GO_VERSION=1.7.4
+ENV GO_VERSION=1.8
 ENV GO_URL=https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz
 ENV GOPATH="${DIR_SRC}/go"
 RUN set -xe \
