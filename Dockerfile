@@ -26,7 +26,7 @@ RUN set -xe \
 ENV SCALA_VERSION=2.12.1
 ENV SCALA_URL=http://downloads.lightbend.com/scala/${SCALA_VERSION}/scala-${SCALA_VERSION}.tgz
 RUN set -xe \
-    && dnf --assumeyes install java-1.8.0-openjdk \
+    && dnf --assumeyes install java-1.8.0-openjdk-devel \
     && dnf clean all \
     && mkdir -p /tmp/scala \
     && cd /tmp/scala \
