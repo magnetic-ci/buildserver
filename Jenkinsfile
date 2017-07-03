@@ -1,13 +1,5 @@
-#!groovy
-
-node('node') {
-  currentBuild.result = "SUCCESS"
-
-  try {
-
-    stage('Checkout') {
-      checkout scm
-    }
+pipeline {
+    agent any
 
     stage('Build') {
       echo 'Build docker image'
@@ -18,9 +10,5 @@ node('node') {
     stage('Deploy') {
       echo 'Push to Docker Hub'
     }
-  }
-  catch (err) {
-    currentBuild.result = "FAILURE"
-    throw err
   }
 }
