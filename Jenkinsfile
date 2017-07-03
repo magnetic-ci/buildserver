@@ -10,7 +10,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        echo 'Build docker image'
+        echo 'Build Docker image'
         sh 'make check'
         sh 'make build'
       }
@@ -19,6 +19,14 @@ pipeline {
     stage('Deploy') {
       steps {
         echo 'Push to Docker Hub'
+      }
+    }
+
+    stage('Clean') {
+      steps {
+        echo 'Clean Docker images'
+        sh 'make clean'
+        sh 'make clean-docker'
       }
     }
   }
