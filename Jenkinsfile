@@ -3,10 +3,12 @@ pipeline {
 
   stages {
     stage('Build') {
-      steps {
-        echo 'Build docker image'
-        sh 'make check'
-        sh 'make build'
+      ansiColor('xterm') {
+        steps {
+          echo 'Build docker image'
+          sh 'make check'
+          sh 'make build'
+        }
       }
     }
 
