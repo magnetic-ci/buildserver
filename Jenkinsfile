@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   options {
-    buildDiscarder logRotator(daysToKeepStr: '10')
+    buildDiscarder logRotator(daysToKeepStr: '15')
     timeout(time: 10, unit: 'MINUTES')
     ansiColor('xterm')
   }
