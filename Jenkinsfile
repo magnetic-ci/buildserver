@@ -25,8 +25,8 @@ pipeline {
     stage('Clean') {
       steps {
         echo 'Clean Docker images'
-        # sh 'make clean-docker'
-        # sh 'make clean'
+        // sh 'make clean-docker'
+        // sh 'make clean'
       }
     }
   }
